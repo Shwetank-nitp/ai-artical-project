@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Pencil, Eraser } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import DecoratedMarkdown from "./ContentMarkdown";
 
 interface AnimationState {
   isAnimating: boolean;
@@ -231,10 +232,8 @@ function App() {
           </div>
 
           <div className="relative" ref={editorWrapperRef}>
-            {!animation.isAnimating && (
-              <ReactMarkdown className={"text-stone-900"}>
-                {content}
-              </ReactMarkdown>
+            {content.length > 0 && !animation.isAnimating && (
+              <DecoratedMarkdown content={content} />
             )}
             {animation.isAnimating && (
               <>
