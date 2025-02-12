@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Pencil, Eraser } from "lucide-react";
-import ReactMarkdown from "react-markdown";
 import DecoratedMarkdown from "./ContentMarkdown";
 
 interface AnimationState {
