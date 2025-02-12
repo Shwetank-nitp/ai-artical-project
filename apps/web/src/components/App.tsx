@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Pencil, Eraser } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface AnimationState {
   isAnimating: boolean;
@@ -82,7 +83,7 @@ function App() {
             rect.left -
             wrapperRect.left +
             (animation.currentText.length < animation.targetText.length
-              ? 10
+              ? 25
               : -4),
           y: rect.top - wrapperRect.top + (rect.height > 24 ? 2 : -2),
         });
@@ -230,31 +231,39 @@ function App() {
           </div>
 
           <div className="relative" ref={editorWrapperRef}>
-            <div
-              ref={editorRef}
-              className="min-h-[300px] text-slate-900 p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 whitespace-pre-wrap leading-6 caret-transparent"
-              contentEditable
-              onInput={(e) => setContent(e.currentTarget.textContent || "")}
-              dangerouslySetInnerHTML={{ __html: content }}
-              suppressContentEditableWarning
-              style={{ fontSize: "16px" }}
-            />
-
+            {!animation.isAnimating && (
+              <ReactMarkdown className={"text-stone-900"}>
+                {content}
+              </ReactMarkdown>
+            )}
             {animation.isAnimating && (
-              <div
-                className="absolute pointer-events-none transition-all duration-75"
-                style={{
-                  left: `${caretPosition.x}px`,
-                  top: `${caretPosition.y}px`,
-                  transform: "translateY(2px)",
-                }}
-              >
-                {animation.currentText.length > animation.targetText.length ? (
-                  <Eraser className="w-5 h-5 text-red-500 animate-pulse" />
-                ) : (
-                  <Pencil className="w-5 h-5 text-indigo-500 animate-pulse" />
-                )}
-              </div>
+              <>
+                <div
+                  ref={editorRef}
+                  className="min-h-[300px] text-slate-900 p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 whitespace-pre-wrap leading-6 caret-transparent"
+                  contentEditable
+                  onInput={(e) => setContent(e.currentTarget.textContent || "")}
+                  suppressContentEditableWarning
+                  style={{ fontSize: "16px" }}
+                />
+                <div
+                  className="absolute pointer-events-none transition-all duration-75"
+                  style={{
+                    left: `${caretPosition.x}px`,
+                    top: `${caretPosition.y}px`,
+                    transform: "translateY(2px)",
+                  }}
+                >
+                  <div>
+                    {animation.currentText.length >
+                    animation.targetText.length ? (
+                      <Eraser className="w-5 h-5 text-red-500 animate-pulse" />
+                    ) : (
+                      <Pencil className="w-5 h-5 text-indigo-500 animate-pulse" />
+                    )}
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </div>
